@@ -4,7 +4,6 @@ import { signOut } from 'next-auth/react';
 
 export default function Overview() {
   const handleLogout = async () => {
-    // Optionally, specify a callback URL to redirect after logout
     await signOut({ callbackUrl: '/login' });
   };
 

@@ -37,11 +37,11 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
     };
 
     return (
-      <div className={`mb-4 ${className}`}>
+      <div className={`mb-5 ${className}`}>
         {label && (
           <label
             htmlFor={id}
-            className="block text-brand-secondary font-semibold mb-2 text-base"
+            className="block text-brand-secondary font-semibold mb-1 text-base"
           >
             {label}
           </label>
@@ -54,13 +54,13 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             type={inputType}
             placeholder={placeholder}
             value={value}
-            className="w-full px-3 py-2 border h-[48px] text-base text-brand-secondary border-gray-300 rounded-[6px] focus:ring-1 focus:outline-none focus:border-brand-primary"
+            className={`w-full px-3 py-2 border h-[48px] text-base text-brand-secondary rounded-[6px] focus:ring-1 ${error ? 'border-red-500 ' : 'border-gray-300'}    focus:outline-none focus:border-brand-primary`}
           />
           {isPasswordField && toggleablePassword && (
             <button
               type="button"
               onClick={handleTogglePassword}
-              className="absolute inset-y-0 right-0 flex items-center  px-3 text-gray-200 focus:outline-none focus:text-brand-primary"
+              className="absolute inset-y-1.5 right-1 flex items-center   px-3 h-11 text-gray-200 focus:outline-none focus:text-brand-primary"
               aria-label={passwordVisible ? 'Hide password' : 'Show password'}
               tabIndex={0}
             >

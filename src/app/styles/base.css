@@ -7,4 +7,16 @@
   --color-accent-light-blue: #82b1ff;
   --color-gray-100: #f0f0f0;
   --color-gray-200: #e0e0e0;
+
+  --animate-fade-in-scale: fade-in-scale 0.3s ease-out;
+  @keyframes fade-in-scale {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }

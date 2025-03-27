@@ -17,7 +17,7 @@ const handler = NextAuth({
       async authorize(credentials) {
         // Call your backend API for authentication.
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/individual/login`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -27,7 +27,30 @@ const handler = NextAuth({
             }),
           }
         );
+
         const data = await res.json();
+
+        if (!res.ok) {
+          const errorMsg =
+            (data &&
+              typeof data === 'object' &&
+              (data.detail?.msg || data.message || data.error)) ||
+            'Authentication failed';
+
+          switch (res.status) {
+            case 403:
+              throw new Error(`FORBIDDEN: ${errorMsg}`);
+
+            case 401:
+              throw new Error(`UNAUTHORIZED: ${errorMsg}`);
+
+            case 404:
+              throw new Error(`NOTFOUND: ${errorMsg}`);
+
+            default:
+              throw new Error(`ERROR: ${errorMsg}`);
+          }
+        }
         // Check if login was successful and data exists.
         if (res.ok && data.status === 'success' && data.data) {
           // Return the data; NextAuth will store this in the session.

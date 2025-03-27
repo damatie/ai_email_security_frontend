@@ -1,23 +1,22 @@
-/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import React from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { InputField } from '@/app/componets/common/InputField/InputField';
-import { Button } from '@/app/componets/common/Button/Button';
-import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
-import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
-import { resendVerificationEmail } from '@/app/lib/api-client-services/auth';
-import { useNextAuthErrorHandler } from '@/app/hooks/useNextAuthErrorHandler ';
 import useCookie from '@/app/hooks/useCookie';
+import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
+import { InputField } from '@/app/componets/common/InputField/InputField';
+import { Button } from '@/app/componets/common/Button/Button';
+import { creatAccount } from '@/app/lib/api-client-services/auth';
+import Link from 'next/link';
 
 // Types
-interface LoginValues {
+export interface CreateAccountValues {
   email: string;
+  first_name: string;
+  last_name: string;
   password: string;
 }
 
@@ -27,17 +26,28 @@ const validationSchema = Yup.object().shape({
     .trim()
     .email('*Invalid email address')
     .required('*Email is required'),
-  password: Yup.string().trim().required('*Password is required'),
+  first_name: Yup.string().trim().required('*First name is required'),
+  last_name: Yup.string().trim().required('*Last name is required'),
+  password: Yup.string()
+    .trim()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/,
+      'Password must include lowercase, uppercase, and number'
+    ),
 });
 
-export default function LoginPage() {
+export default function CreateAccountPage() {
   const router = useRouter();
   const { handleApiError } = useApiErrorHandler();
-  const { handleNextAuthError } = useNextAuthErrorHandler();
   const { set: setEmail } = useCookie('vr_e');
 
-  const initialValues: LoginValues = {
+  // Initial form values
+  const initialValues: CreateAccountValues = {
     email: '',
+    first_name: '',
+    last_name: '',
     password: '',
   };
 
@@ -48,33 +58,20 @@ export default function LoginPage() {
 
   // Handle form submission
   const handleSubmit = async (
-    values: LoginValues,
-    { setSubmitting }: FormikHelpers<LoginValues>
+    values: CreateAccountValues,
+    { setSubmitting }: FormikHelpers<CreateAccountValues>
   ) => {
     try {
       const payload = {
-        email: values.email,
+        ...values,
       };
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: values.email,
-        password: values.password,
-      });
+      const res = await creatAccount(payload);
+      if (res.status === 201) {
+        handleCookie(payload.email);
 
-      if (result?.error) {
-        const errCode = handleNextAuthError(result?.error);
-
-        if (errCode === 403) {
-          const res = await resendVerificationEmail(payload);
-          if (res.status === 200) {
-            handleCookie(payload.email);
-            router.push('/verify-email');
-          }
-        }
-      } else {
-        router.refresh(); // This triggers a re-evaluation of the middleware
+        router.push('/verify-email');
       }
-    } catch (error) {
+    } catch (error: unknown) {
       handleApiError(error);
     } finally {
       setSubmitting(false);
@@ -83,12 +80,12 @@ export default function LoginPage() {
 
   return (
     <AuthFormWrapper
-      mainTitle=" Welcome Back!"
+      mainTitle="Reset Password"
       subContent={
         <>
-          Use Inqlo to keep your mail box safe. Don't have an account yet?{' '}
-          <Link href="/register" className="text-blue-400 font-medium">
-            Create an account
+          Use Inqlo to keep you mail box safe. Already have an account{' '}
+          <Link href="/login" className="text-blue-400 font-medium">
+            Login
           </Link>
         </>
       }
@@ -124,26 +121,48 @@ export default function LoginPage() {
                 error={touched.email && errors.email ? errors.email : ''}
               />
               <InputField
+                id="first_name"
+                label="First Name"
+                type="text"
+                onBlur={handleBlur}
+                placeholder="Enter first name"
+                value={values.first_name}
+                onChange={(e) => setFieldValue('first_name', e.target.value)}
+                error={
+                  touched.first_name && errors.first_name
+                    ? errors.first_name
+                    : ''
+                }
+              />
+              <InputField
+                id="last_name"
+                label="Last Name"
+                type="text"
+                onBlur={handleBlur}
+                placeholder="Enter last name"
+                value={values.last_name}
+                onChange={(e) => setFieldValue('last_name', e.target.value)}
+                error={
+                  touched.last_name && errors.last_name ? errors.last_name : ''
+                }
+              />
+              <InputField
                 id="password"
                 label="Password"
                 type="password"
                 onBlur={handleBlur}
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 value={values.password}
                 onChange={(e) => setFieldValue('password', e.target.value)}
-                toggleablePassword={true}
+                toggleablePassword
                 error={
                   touched.password && errors.password ? errors.password : ''
                 }
-                className="!mb-[10px]"
               />
-              <div className="flex flex-col w-full justify-items-end text-base items-end underline font-medium text-blue-400">
-                <Link href="/forgot-password">Forgot password?</Link>
-              </div>
               <Button
-                label={isSubmitting ? 'Processing...' : 'Login'}
+                label={isSubmitting ? 'Processing...' : 'Create Account'}
                 type="submit"
-                className="mt-4"
+                className="mt-4 w-full"
                 disabled={isButtonDisabled}
               />
             </Form>
