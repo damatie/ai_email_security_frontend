@@ -22,7 +22,6 @@ export const useNextAuthErrorHandler = () => {
 
   const handleNextAuthError = useCallback(
     (error: string | undefined) => {
-      // Early return if no error
       if (!error) return null;
 
       // Use a switch statement for more readable and potentially more performant error handling
