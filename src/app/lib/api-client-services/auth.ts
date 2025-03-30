@@ -17,7 +17,9 @@ export const verifyEmail = async (payload: VerifyEmailValues) => {
 };
 
 // User resend verification email
-export const resendVerificationEmail = async (payload: { email: string }) => {
+export const resendVerificationEmail = async (payload: {
+  email: string | undefined;
+}) => {
   const url = `${apiVersion.v1}/auth/email-verification/resend`;
   return await api.post(url, payload);
 };

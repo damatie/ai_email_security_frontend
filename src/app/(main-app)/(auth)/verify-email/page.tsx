@@ -6,12 +6,16 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
 import useCookie from '@/app/hooks/useCookie';
-import { verifyEmail } from '@/app/lib/api-client-services/auth';
+import {
+  resendVerificationEmail,
+  verifyEmail,
+} from '@/app/lib/api-client-services/auth';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
 import { InputField } from '@/app/componets/common/InputField/InputField';
 import { Button } from '@/app/componets/common/Button/Button';
 import { FeedbackCard } from '@/app/componets/common/FeedbackCard/FeedbackCard';
 import clockIcon from '../../../../../public/icons/clock.svg';
+import { ResendButton } from './logic/ResendButton';
 
 // Types
 export interface VerifyEmailValues {
@@ -30,7 +34,6 @@ export default function VerifyEmailPage() {
   const router = useRouter();
   const { handleApiError } = useApiErrorHandler();
   const { value: email, remove: removeEmail } = useCookie('vr_e');
-
   const [verifyEmailSession, setVerifyEmailSession] = useState<boolean>(false);
 
   if (!email && !verifyEmailSession) {
@@ -95,6 +98,17 @@ export default function VerifyEmailPage() {
     }
   };
 
+  // Handle resend code
+  const handleResendCode = async () => {
+    try {
+      const res = await resendVerificationEmail({ email });
+      return res?.status === 200;
+    } catch (err) {
+      console.error('Resend email failed:', err);
+      return false;
+    }
+  };
+
   return (
     email && (
       <AuthFormWrapper
@@ -138,6 +152,10 @@ export default function VerifyEmailPage() {
                   className=" w-full"
                   disabled={isButtonDisabled}
                 />
+
+                <div className=" text-center w-full">
+                  <ResendButton onResend={handleResendCode} cooldownTime={60} />
+                </div>
               </Form>
             );
           }}

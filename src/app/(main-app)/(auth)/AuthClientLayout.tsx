@@ -10,7 +10,7 @@ export default function AuthClientLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex flex-row w-full min-h-screen">
+    <main className="flex flex-row w-full md:min-h-screen">
       <div className="flex flex-col w-full bg-white px-7 pt-10 md:px-[65px] md:pt-[65px] items-center">
         <section className="flex flex-col w-full max-w-[600px]">
           <Image src={mainLogo} alt="Logo" className="object-contain" />
