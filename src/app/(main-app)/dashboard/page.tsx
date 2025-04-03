@@ -1,21 +1,82 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import PageTop from '@/app/componets/common/PageGreetings/pageTop';
+import MetricCard from './components/MetricCard/MetricCard';
+import ThreatSummary from './components/ThreatSummary/ThreatSummary';
+import ThreatTrendBarChart from './components/ThreatTrends/ThreatTrendBarChart';
+import RecentActivityCard from './components/RecentActivity/RecentActivityCard';
+import { useTimeOfDay } from '@/app/hooks/useDateTime';
+import { useSession } from 'next-auth/react';
+import LoadingScreen from '@/app/componets/common/LoadingScreen/LoadingScreen';
 
 export default function Overview() {
-  const handleLogout = async () => {
-    await signOut({ callbackUrl: '/login' });
-  };
+  const timeOfDay = useTimeOfDay();
+  const { data: session, status } = useSession();
+  const userName = session?.user?.first_name;
+
+  const dailyActivityData = [
+    { name: 'Mon', suspicious: 32, malicious: 27 },
+    { name: 'Tue', suspicious: 38, malicious: 32 },
+    { name: 'Wed', suspicious: 45, malicious: 40 },
+    { name: 'Thu', suspicious: 23, malicious: 15 },
+    { name: 'Fri', suspicious: 30, malicious: 20 },
+    { name: 'Sat', suspicious: 16, malicious: 10 },
+    { name: 'Sun', suspicious: 12, malicious: 8 },
+  ];
+
+  const weeklyActivityData = [
+    { name: 'Week 1', suspicious: 120, malicious: 80 },
+    { name: 'Week 2', suspicious: 150, malicious: 95 },
+    { name: 'Week 3', suspicious: 180, malicious: 110 },
+    { name: 'Week 4', suspicious: 90, malicious: 60 },
+  ];
+
+  const monthlyActivityData = [
+    { name: 'Jan', suspicious: 400, malicious: 300 },
+    { name: 'Feb', suspicious: 520, malicious: 380 },
+    { name: 'Mar', suspicious: 600, malicious: 420 },
+    { name: 'Apr', suspicious: 380, malicious: 290 },
+    { name: 'May', suspicious: 450, malicious: 320 },
+    { name: 'Jun', suspicious: 520, malicious: 370 },
+  ];
+
+  if (status === 'loading') {
+    return <LoadingScreen />;
+  }
 
   return (
-    <main className="  h-screen bg-amber-200 text-center">
-      <h2 className="text-2xl">This is the Overview page</h2>
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 text-white cursor-pointer px-4 py-2 rounded"
-      >
-        Logout
-      </button>
+    <main className=" flex flex-col w-full">
+      <PageTop
+        title={`Good ${timeOfDay}, ${userName}!`}
+        subTitle="Here’s what happening in your email"
+      />
+      <div className=" flex flex-col gap-y-[22px]">
+        <section className="flex flex-col md:flex-row w-full gap-y-[10px] md:gap-x-[22px] ">
+          <MetricCard
+            iconName={'fluent:mail-48-regular'}
+            title={'Total Emails Scanned'}
+            data={'350'}
+            dataClassName="text-2xl "
+          />
+          <MetricCard
+            iconName={'fluent:clock-20-regular'}
+            title={'Last Scanned'}
+            data={'Feb 19, 2025 08:50 AM'}
+            dataClassName=""
+          />
+        </section>
+        <section className="flex flex-col xl:flex-row w-full gap-y-[22px] md:gap-x-[22px] ">
+          <ThreatSummary />
+          <ThreatTrendBarChart
+            dailyData={dailyActivityData}
+            weeklyData={weeklyActivityData}
+            monthlyData={monthlyActivityData}
+          />
+        </section>
+        <section className="flex flex-row w-full md:gap-x-[22px] ">
+          <RecentActivityCard />
+        </section>
+      </div>
     </main>
   );
 }
