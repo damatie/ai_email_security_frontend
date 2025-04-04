@@ -3,8 +3,8 @@
 import React from 'react';
 import { Formik, Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { InputField } from '@/app/componets/common/InputField/InputField';
-import { Button } from '@/app/componets/common/Button/Button';
+import { InputField } from '@/app/components/common/InputField/InputField';
+import { Button } from '@/app/components/common/Button/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { forgotPassword } from '@/app/lib/api-client-services/auth';

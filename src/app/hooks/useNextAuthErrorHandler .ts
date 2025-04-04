@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useToast } from '../componets/common/toast/ToastContext';
+import { useToast } from '../components/common/toast/ToastContext';
 
 // Define a type for toast options to improve type checking
 type ToastOptions = Parameters<ReturnType<typeof useToast>['showToast']>[2];

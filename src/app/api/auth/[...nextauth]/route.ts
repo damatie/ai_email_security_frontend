@@ -54,7 +54,7 @@ const handler = NextAuth({
         // Check if login was successful and data exists.
         if (res.ok && data.status === 'success' && data.data) {
           // Return the data; NextAuth will store this in the session.
-          return data.data;
+          return { ...data.data.user, access_token: data.data.access_token };
         }
         return null;
       },
@@ -70,9 +70,9 @@ const handler = NextAuth({
         // Map the backend's access_token to our token property.
         token.accessToken = user.access_token;
         token.id = Number(user?.id);
-        token.email = user?.email || user.email;
-        token.first_name = user?.first_name || user.first_name;
-        token.last_name = user?.last_name || user.last_name;
+        token.email = user.email;
+        token.first_name = user.first_name;
+        token.last_name = user.last_name;
       }
       return token;
     },
