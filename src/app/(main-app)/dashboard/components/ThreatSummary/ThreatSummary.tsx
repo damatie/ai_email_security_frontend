@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomPieChart from '@/app/componets/common/Piechart/CustomPieChart';
+import CustomPieChart from '@/app/components/common/Piechart/CustomPieChart';
 
 const ThreatSummary: React.FC = () => {
   // Example data

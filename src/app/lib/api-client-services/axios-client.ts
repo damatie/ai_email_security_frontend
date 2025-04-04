@@ -12,7 +12,7 @@ export const apiVersion = {
 };
 
 // Helper function to set or remove the Authorization header
-export const setAuthToken = (token: string | null) => {
+export const setAuthToken = (token: string | null | undefined) => {
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   } else {

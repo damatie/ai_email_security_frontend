@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import CheckList from '../../../../../public/icons/check.svg';
-import { Button } from '@/app/componets/common/Button/Button';
+import { Button } from '@/app/components/common/Button/Button';
 
 interface FeedbackCardProps {
   title: string;

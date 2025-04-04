@@ -1,10 +1,13 @@
 'use client';
 
-import SideNav from '@/app/componets/navs/side-nav/SideNav';
-import TopNav from '@/app/componets/navs/top-nav/TopNav';
-import { useAppSelector } from '@/app/state/hook';
+import LoadingScreen from '@/app/components/common/LoadingScreen/LoadingScreen';
+import SideNav from '@/app/components/navs/side-nav/SideNav';
+import TopNav from '@/app/components/navs/top-nav/TopNav';
+import { useUserProfile } from '@/app/lib/api-client-services/userProfile';
+import { setUserProfile } from '@/app/state/features/userProfile/UserProfileSlice';
+import { useAppDispatch, useAppSelector } from '@/app/state/hook';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function DashboardClientLayout({
   children,
@@ -14,23 +17,38 @@ export default function DashboardClientLayout({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { overviewDetails } = useAppSelector((state) => state.dashboard);
   const { accountConnected } = overviewDetails;
+  const { data: fetchedProfile, isLoading, isSuccess } = useUserProfile();
+  const dispatch = useAppDispatch();
+
+  // Save fetched profile to redux state when updated.
+  useEffect(() => {
+    if (fetchedProfile?.data) {
+      try {
+        dispatch(setUserProfile(fetchedProfile.data));
+      } catch (err) {
+        console.error('Failed to set user profile:', err);
+      }
+    }
+  }, [dispatch, fetchedProfile]);
 
   // Handle mobile menu toggle
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Mobile Menu Button (Visible on Mobile) */}
-      <div className=" xl:hidden fixed top-7 left-5 z-50 ">
+      <div className="xl:hidden fixed top-7 left-5 z-50">
         <button
           onClick={toggleMobileMenu}
-          className="border rounded-[10px] bg-brand-primary p-1 "
+          className=" flex border rounded-[10px] bg-brand-primary h-9 w-9 items-center justify-center"
+          aria-label="Toggle mobile menu"
+          aria-expanded={isMobileMenuOpen}
         >
           <Icon
-            // amazonq-ignore-next-line
             icon={isMobileMenuOpen ? '' : 'fe:text-align-left'}
-            className={`h-6 w-6 ${isMobileMenuOpen ? ' text-gray-200' : 'text-gray-200'}`}
+            className="h-7 w-7 text-gray-200"
           />
         </button>
       </div>
@@ -38,14 +56,17 @@ export default function DashboardClientLayout({
       <SideNav isMobileMenuOpen={isMobileMenuOpen} />
 
       <div
-        className={`flex-1 ${
+        className={`flex-1 relative ${
           isMobileMenuOpen ? 'overflow-hidden' : ''
-        } xl:ml-64 lg:overflow-x-hidden  overflow-y-auto p-6 md:p-10 md:pt-7`}
+        } xl:ml-64 lg:overflow-x-hidden overflow-y-auto p-6 md:p-10 md:pt-7`}
       >
         <TopNav connectedAccountsCount={accountConnected} />
-        <main className=" flex flex-col xl:max-w-[1338px]  mx-auto">
-          {children}
-        </main>
+        {!isLoading && <LoadingScreen />}
+        {isSuccess && (
+          <main className="flex flex-col relative  xl:max-w-[1338px] mx-auto mb-10 ">
+            {children}
+          </main>
+        )}
       </div>
 
       {/* Mobile Side Nav Overlay */}
@@ -53,6 +74,7 @@ export default function DashboardClientLayout({
         <div
           className="fixed inset-0 bg-black opacity-20 z-20 xl:hidden"
           onClick={toggleMobileMenu}
+          aria-hidden="true"
         ></div>
       )}
     </div>

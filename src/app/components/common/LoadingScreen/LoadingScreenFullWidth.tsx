@@ -2,7 +2,7 @@
 import React from 'react';
 
 /**
- * LoadingScreen component
+ * LoadingScreenFullWidth component
  *
  * A full-screen loader that displays a modern spinner and a "Loading..." message.
  * This component is designed to cover the entire viewport while your page is loading.
@@ -10,12 +10,12 @@ import React from 'react';
  * @example
  * return (
  *   <div>
- *     {isLoading && <LoadingScreen />}
+ *     {isLoading && <LoadingScreenFullWidth />}
  *     <YourPageContent />
  *   </div>
  * );
  */
-const LoadingScreen: React.FC = () => {
+const LoadingScreenFullWidth: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
       {/* Spinner */}
@@ -28,4 +28,4 @@ const LoadingScreen: React.FC = () => {
   );
 };
 
-export default LoadingScreen;
+export default LoadingScreenFullWidth;

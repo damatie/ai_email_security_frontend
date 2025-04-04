@@ -1,18 +1,16 @@
 'use client';
 
-import PageTop from '@/app/componets/common/PageGreetings/pageTop';
+import PageTop from '@/app/components/common/PageGreetings/pageTop';
 import MetricCard from './components/MetricCard/MetricCard';
 import ThreatSummary from './components/ThreatSummary/ThreatSummary';
 import ThreatTrendBarChart from './components/ThreatTrends/ThreatTrendBarChart';
 import RecentActivityCard from './components/RecentActivity/RecentActivityCard';
 import { useTimeOfDay } from '@/app/hooks/useDateTime';
-import { useSession } from 'next-auth/react';
-import LoadingScreen from '@/app/componets/common/LoadingScreen/LoadingScreen';
+import { useAppSelector } from '@/app/state/hook';
 
 export default function Overview() {
   const timeOfDay = useTimeOfDay();
-  const { data: session, status } = useSession();
-  const userName = session?.user?.first_name;
+  const { userProfile } = useAppSelector((state) => state.userProfile);
 
   const dailyActivityData = [
     { name: 'Mon', suspicious: 32, malicious: 27 },
@@ -40,14 +38,14 @@ export default function Overview() {
     { name: 'Jun', suspicious: 520, malicious: 370 },
   ];
 
-  if (status === 'loading') {
-    return <LoadingScreen />;
-  }
+  // if (status === 'loading') {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <main className=" flex flex-col w-full">
       <PageTop
-        title={`Good ${timeOfDay}, ${userName}!`}
+        title={`Good ${timeOfDay}, ${userProfile?.first_name}!`}
         subTitle="Here’s what happening in your email"
       />
       <div className=" flex flex-col gap-y-[22px]">

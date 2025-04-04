@@ -8,9 +8,9 @@ import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
 import useCookie from '@/app/hooks/useCookie';
 import { resetPassword } from '@/app/lib/api-client-services/auth';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
-import { InputField } from '@/app/componets/common/InputField/InputField';
-import { Button } from '@/app/componets/common/Button/Button';
-import { FeedbackCard } from '@/app/componets/common/FeedbackCard/FeedbackCard';
+import { InputField } from '@/app/components/common/InputField/InputField';
+import { Button } from '@/app/components/common/Button/Button';
+import { FeedbackCard } from '@/app/components/common/FeedbackCard/FeedbackCard';
 import clockIcon from '../../../../../public/icons/clock.svg';
 
 // Types

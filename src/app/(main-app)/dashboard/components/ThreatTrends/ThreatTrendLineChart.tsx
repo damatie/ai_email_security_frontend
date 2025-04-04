@@ -1,11 +1,11 @@
 import React from 'react';
-import CustomLineChart from '@/app/componets/common/LineChart/CustomLineChart';
+import CustomLineChart from '@/app/components/common/LineChart/CustomLineChart';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/app/componets/common/Tabs/Tabs';
+} from '@/app/components/common/Tabs/Tabs';
 
 interface ThreatTrendLineChartProps {
   dailyData: unknown[];

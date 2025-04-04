@@ -1,10 +1,10 @@
-import CustomBarChart from '@/app/componets/common/BarChart/BarChart';
+import CustomBarChart from '@/app/components/common/BarChart/BarChart';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/app/componets/common/Tabs/Tabs';
+} from '@/app/components/common/Tabs/Tabs';
 import React from 'react';
 
 interface ThreatTrendBarChartProps {

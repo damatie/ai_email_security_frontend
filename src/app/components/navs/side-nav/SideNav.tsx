@@ -8,6 +8,9 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { menuItems } from './exportData';
 import mainLogo from '../../../../../public/img/logo-inverted.svg';
+import { useUserProfile } from '@/app/lib/api-client-services/userProfile';
+import { LoadingSkeleton } from './Loadingskeleton';
+import useInitials from '@/app/hooks/useInitials';
 
 interface SideNavProps {
   isMobileMenuOpen: boolean;
@@ -15,6 +18,11 @@ interface SideNavProps {
 
 const SideNav: React.FC<SideNavProps> = ({ isMobileMenuOpen }) => {
   const pathname = usePathname();
+  const { data: fetchedProfile, isSuccess } = useUserProfile();
+  const fullName = `${fetchedProfile?.data?.first_name} ${fetchedProfile?.data?.last_name}`;
+  const { initials } = useInitials({ name: fullName });
+
+  // Handle user logout
   const handleLogout = async () => {
     await signOut({ callbackUrl: '/login' });
   };
@@ -61,28 +69,32 @@ const SideNav: React.FC<SideNavProps> = ({ isMobileMenuOpen }) => {
         </Link>
       </div>
       <div className="p-4 border-t   border-brand-primary-light">
-        <div className="flex items-center justify-between  w-full px-0 py-3 rounded-md text-gray-300 hover:bg-sidebar-hover transition-colors">
-          <div className=" flex flex-row items-center">
-            <div className="w-10 h-10 rounded-full bg-brand-primary-light flex items-center justify-center mr-3">
-              <span className="font-semibold text-sm">EM</span>
+        {isSuccess ? (
+          <div className="flex items-center justify-between  w-full px-0 py-3 rounded-md text-gray-300 hover:bg-sidebar-hover transition-colors">
+            <div className=" flex flex-row items-center">
+              <div className="w-10 h-10 rounded-full bg-brand-primary-light flex items-center justify-center mr-3">
+                <span className="font-semibold text-sm">{initials}</span>
+              </div>
+              <div className=" flex flex-col items-start">
+                <span className=" text-sm">{fullName}</span>
+                <span className=" text-xs font-medium text-brand-green">
+                  Acive
+                </span>
+              </div>
             </div>
-            <div className=" flex flex-col items-start">
-              <span className=" text-sm">Edafe maxwell</span>
-              <span className=" text-xs font-medium text-brand-green">
-                Acive
-              </span>
-            </div>
+            <button
+              onClick={handleLogout}
+              className=" text-gray-300 cursor-pointer"
+            >
+              <Icon
+                icon="material-symbols-light:logout-rounded"
+                className="h-6 w-6 "
+              />
+            </button>
           </div>
-          <button
-            onClick={handleLogout}
-            className=" text-gray-300 cursor-pointer"
-          >
-            <Icon
-              icon="material-symbols-light:logout-rounded"
-              className="h-6 w-6 "
-            />
-          </button>
-        </div>
+        ) : (
+          <LoadingSkeleton />
+        )}
       </div>
     </div>
   );

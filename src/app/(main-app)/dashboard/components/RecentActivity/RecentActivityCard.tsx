@@ -1,7 +1,7 @@
 import React from 'react';
 import RecentActivityList, { Activity } from './RecentActivityList';
 import { Icon } from '@iconify/react';
-import { Button } from '@/app/componets/common/Button/Button';
+import { Button } from '@/app/components/common/Button/Button';
 
 const recentActivity: Activity[] = [
   {

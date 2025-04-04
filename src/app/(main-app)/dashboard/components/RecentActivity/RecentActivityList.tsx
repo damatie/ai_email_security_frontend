@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import { Button } from '@/app/componets/common/Button/Button';
+import { Button } from '@/app/components/common/Button/Button';
 import { useFormatTime } from '@/app/hooks/useDateTime';
 
 export interface Activity {
