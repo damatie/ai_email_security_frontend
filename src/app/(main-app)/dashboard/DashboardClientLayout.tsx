@@ -61,7 +61,7 @@ export default function DashboardClientLayout({
         } xl:ml-64 lg:overflow-x-hidden overflow-y-auto p-6 md:p-10 md:pt-7`}
       >
         <TopNav connectedAccountsCount={accountConnected} />
-        {!isLoading && <LoadingScreen />}
+        {isLoading && <LoadingScreen />}
         {isSuccess && (
           <main className="flex flex-col relative  xl:max-w-[1338px] mx-auto mb-10 ">
             {children}
