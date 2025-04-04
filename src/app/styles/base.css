@@ -24,3 +24,15 @@
     }
   }
 }
+
+/* Mini section scroll bar style */
+.mini-scroll::-webkit-scrollbar {
+  width: 0.4em;
+}
+.mini-scroll ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+}
+.mini-scroll::-webkit-scrollbar-thumb {
+  background-color: #2b2d31;
+  outline: 0 solid #37474f;
+}

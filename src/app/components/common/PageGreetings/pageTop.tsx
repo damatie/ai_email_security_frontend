@@ -5,9 +5,9 @@ interface PageTopProps {
   subTitle?: string;
 }
 
-export default function PageTop({ title = '', subTitle = '' }: PageTopProps) {
+export default function PageTop({ title, subTitle }: PageTopProps) {
   return (
-    <div className="flex justify-between items-center w-full pt-7  lg:pt-4 mb-10 lg:mb-16">
+    <div className="flex justify-between items-center w-full pt-0 mb-10 lg:mb-16">
       <div className=" flex flex-col w-full  ">
         <h1 className=" text-xl md:text-3xl lg:text-[34px] text-brand-primary font-bold capitalize">
           {title}
