@@ -17,7 +17,7 @@ export default function DashboardClientLayout({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { overviewDetails } = useAppSelector((state) => state.dashboard);
   const { accountConnected } = overviewDetails;
-  const { data: fetchedProfile, isLoading, isSuccess } = useUserProfile();
+  const { data: fetchedProfile, isSuccess, isError } = useUserProfile();
   const dispatch = useAppDispatch();
 
   // Save fetched profile to redux state when updated.
@@ -76,11 +76,17 @@ export default function DashboardClientLayout({
         />
 
         <div className="p-6 md:p-10 md:pt-7">
-          {isLoading && <LoadingScreen />}
-          {isSuccess && (
+          {/* {isLoading && <LoadingScreen />} */}
+          {isSuccess ? (
             <main className="flex flex-col relative xl:max-w-[1338px] mx-auto pb-10">
               {children}
             </main>
+          ) : isError ? (
+            <div className="text-center text-red-500">
+              <p>Failed to load user profile.</p>
+            </div>
+          ) : (
+            <LoadingScreen />
           )}
         </div>
       </div>

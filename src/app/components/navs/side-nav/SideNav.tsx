@@ -12,6 +12,19 @@ import { useUserProfile } from '@/app/lib/api-client-services/userProfile';
 import { LoadingSkeleton } from './Loadingskeleton';
 import useInitials from '@/app/hooks/useInitials';
 
+// Reusable tooltip component
+interface TooltipProps {
+  text: string;
+}
+
+const CollapsedTooltip: React.FC<TooltipProps> = ({ text }) => {
+  return (
+    <div className="fixed left-24 transform -translate-y-1/2 mt-0 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-40">
+      {text}
+    </div>
+  );
+};
+
 interface SideNavProps {
   isMobileMenuOpen: boolean;
   isCollapsed?: boolean;
@@ -85,8 +98,10 @@ const SideNav: React.FC<SideNavProps> = ({
           </button>
         )}
 
-        <div className="flex flex-col flex-1 overflow-y-auto mini-scroll justify-between">
-          <nav className="mt-6 px-2">
+        {/* Main content area with proper overflow handling */}
+        <div className="flex flex-col h-full overflow-hidden">
+          {/* Navigation menu - with its own scrollable area */}
+          <nav className="flex-1 overflow-y-auto mini-scroll mt-6 px-2">
             <ul className="space-y-1">
               {menuItems.map((item) => (
                 <li key={item.id} className="group">
@@ -117,20 +132,16 @@ const SideNav: React.FC<SideNavProps> = ({
                       )}
                     </Link>
 
-                    {/* Tooltip for collapsed mode - MOVED OUTSIDE FLOW */}
-                    {isCollapsed && (
-                      <div className="fixed left-24 transform -translate-y-1/2 mt-0 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-40">
-                        {item.name}
-                      </div>
-                    )}
+                    {/* Using reusable tooltip component */}
+                    {isCollapsed && <CollapsedTooltip text={item.name} />}
                   </div>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* Bottom section */}
-          <div>
+          {/* Bottom section - fixed at bottom */}
+          <div className="mt-auto flex-shrink-0">
             <div className="p-2 border-t border-brand-primary-light">
               <div className="group relative">
                 <Link
@@ -147,12 +158,8 @@ const SideNav: React.FC<SideNavProps> = ({
                   {!isCollapsed && <span className="ml-3">Settings</span>}
                 </Link>
 
-                {/* Settings tooltip when collapsed - MOVED OUTSIDE FLOW */}
-                {isCollapsed && (
-                  <div className="fixed left-24 transform -translate-y-1/2 mt-4 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-40">
-                    Settings
-                  </div>
-                )}
+                {/* Using reusable tooltip component */}
+                {isCollapsed && <CollapsedTooltip text="Settings" />}
               </div>
             </div>
 
@@ -188,7 +195,7 @@ const SideNav: React.FC<SideNavProps> = ({
                   </div>
                 ) : isError ? (
                   <div className="text-sm text-red-300 px-2 py-1">
-                    Error loading profile
+                    Failed to load profile
                   </div>
                 ) : (
                   <LoadingSkeleton />
@@ -209,10 +216,8 @@ const SideNav: React.FC<SideNavProps> = ({
                     />
                   </button>
 
-                  {/* Logout tooltip when collapsed - MOVED OUTSIDE FLOW */}
-                  <div className="fixed left-24 transform -translate-y-1/2 mt-4 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-40">
-                    Logout
-                  </div>
+                  {/* Using reusable tooltip component */}
+                  <CollapsedTooltip text="Logout" />
                 </div>
               </div>
             )}
