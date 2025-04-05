@@ -34,18 +34,15 @@ export function useUserProfile() {
   const query = useQuery({
     queryKey: ['userProfile', token],
     queryFn: () => getUserProfile(token as string),
-    enabled: !!token,
-    staleTime: 24 * 60 * 60 * 1000, // Consider fresh for 24 hours
-    gcTime: 7 * 24 * 60 * 60 * 1000, // Keep in cache for 7 days
-    refetchOnMount: 'always', // Refetch when component mounts (but respects staleTime)
+    enabled: !!token, // Only run the query if the token exists.
+    staleTime: 60000, // Data remains fresh for 1 minute.
     refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 
   // Handle error outside the useQuery options
   useEffect(() => {
     if (query.error) {
-      handleApiError(query.error, 'Unable to load user profile');
+      handleApiError(query.error);
     }
   }, [query.error, handleApiError]);
 
