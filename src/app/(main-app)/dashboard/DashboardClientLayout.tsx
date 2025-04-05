@@ -55,7 +55,7 @@ export default function DashboardClientLayout({
   };
 
   return (
-    <div className="flex bg-red-400 overflow-hidden">
+    <div className="flex relative bg-gray-100 min-h-screen">
       {/* SideNav component */}
       <SideNav
         isMobileMenuOpen={isMobileMenuOpen}
@@ -68,7 +68,7 @@ export default function DashboardClientLayout({
       <div
         className={`flex flex-col flex-1 transition-all duration-300 ${
           isCollapsed ? 'xl:ml-20' : 'xl:ml-64'
-        } w-full overflow-hidden`}
+        } w-full`}
       >
         {/* Fixed TopNav */}
         <div className="sticky top-0 z-10 bg-gray-100 w-full">
@@ -80,7 +80,7 @@ export default function DashboardClientLayout({
         </div>
 
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto pb-safe">
+        <div className="flex-1">
           <div className="p-6 md:p-10 md:pt-7">
             {isSuccess ? (
               <main className="flex flex-col relative xl:max-w-[1338px] mx-auto pb-10">
