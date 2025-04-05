@@ -15,9 +15,9 @@ const TopNav: React.FC<TopNavProps> = ({
   isMobileMenuOpen,
 }) => {
   return (
-    <div className="flex items-center justify-between py-4 px-4 md:px-6">
+    <div className="flex items-center justify-between py-4 px-4 md:px-6 bg-gray-100 shadow-sm xl:shadow-none">
       <div className="flex items-center">
-        {/* Mobile menu toggle button moved to TopNav */}
+        {/* Mobile menu toggle button */}
         <button
           onClick={onToggleMobileMenu}
           className="xl:hidden mr-4 flex border rounded-lg bg-brand-primary h-10 w-10 items-center justify-center shadow-md hover:bg-brand-primary-dark transition-all duration-200"
@@ -37,11 +37,13 @@ const TopNav: React.FC<TopNavProps> = ({
 
       <div className="flex items-center space-x-4">
         {/* Connected accounts indicator */}
-        <div className="hidden md:flex items-center px-4 py-2 bg-white rounded-lg shadow-sm">
+        <div className="flex items-center px-4 py-2 bg-white rounded-lg shadow-sm">
           <Icon icon="heroicons:link" className="h-5 w-5 text-gray-500 mr-2" />
-          <span className="text-sm font-medium text-gray-600">
-            {connectedAccountsCount}{' '}
-            {connectedAccountsCount === 1 ? 'Account' : 'Accounts'} Connected
+          <span className=" flex text-sm gap-1 font-medium text-gray-600">
+            {connectedAccountsCount}
+            <span className="hidden md:flex">
+              {connectedAccountsCount === 1 ? 'Account' : 'Accounts'} Connected
+            </span>
           </span>
         </div>
 

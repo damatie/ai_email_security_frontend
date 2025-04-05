@@ -55,8 +55,8 @@ export default function DashboardClientLayout({
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Mobile Menu Button (Visible on Mobile) - Moved to TopNav */}
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* SideNav component */}
       <SideNav
         isMobileMenuOpen={isMobileMenuOpen}
         isCollapsed={isCollapsed}
@@ -64,30 +64,36 @@ export default function DashboardClientLayout({
         onToggleCollapse={toggleSidebarCollapse}
       />
 
+      {/* Main content area */}
       <div
-        className={`flex-1 transition-all duration-300 ${
+        className={`flex flex-col flex-1 transition-all duration-300 ${
           isCollapsed ? 'xl:ml-20' : 'xl:ml-64'
-        } lg:overflow-x-hidden overflow-y-auto`}
+        } w-full overflow-hidden`}
       >
-        <TopNav
-          connectedAccountsCount={accountConnected}
-          onToggleMobileMenu={toggleMobileMenu}
-          isMobileMenuOpen={isMobileMenuOpen}
-        />
+        {/* Fixed TopNav */}
+        <div className="sticky top-0 z-10 bg-gray-100 w-full">
+          <TopNav
+            connectedAccountsCount={accountConnected}
+            onToggleMobileMenu={toggleMobileMenu}
+            isMobileMenuOpen={isMobileMenuOpen}
+          />
+        </div>
 
-        <div className="p-6 md:p-10 md:pt-7">
-          {/* {isLoading && <LoadingScreen />} */}
-          {isSuccess ? (
-            <main className="flex flex-col relative xl:max-w-[1338px] mx-auto pb-10">
-              {children}
-            </main>
-          ) : isError ? (
-            <div className="text-center text-red-500">
-              <p>Failed to load user profile.</p>
-            </div>
-          ) : (
-            <LoadingScreen />
-          )}
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto pb-safe">
+          <div className="p-6 md:p-10 md:pt-7">
+            {isSuccess ? (
+              <main className="flex flex-col relative xl:max-w-[1338px] mx-auto pb-10">
+                {children}
+              </main>
+            ) : isError ? (
+              <div className="text-center text-red-500">
+                <p>Failed to load user profile.</p>
+              </div>
+            ) : (
+              <LoadingScreen />
+            )}
+          </div>
         </div>
       </div>
 

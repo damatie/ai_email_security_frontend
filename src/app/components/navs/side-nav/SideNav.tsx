@@ -99,7 +99,7 @@ const SideNav: React.FC<SideNavProps> = ({
           </button>
         )}
 
-        {/* Content wrapper with proper overflow behavior */}
+        {/* Content wrapper */}
         <div className="flex flex-col flex-grow h-0 overflow-hidden">
           {/* Scrollable navigation area */}
           <div className="flex-grow overflow-y-auto mini-scroll">
