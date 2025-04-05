@@ -51,14 +51,15 @@ const SideNav: React.FC<SideNavProps> = ({
   return (
     <>
       <div
-        className={`flex flex-col h-screen bg-brand-primary text-white fixed left-0 top-0 z-30 transition-all duration-300 ${
+        className={`fixed left-0 top-0 z-30 flex flex-col w-[267px] h-full max-h-screen bg-brand-primary text-white transition-all duration-300 ${
           isMobileMenuOpen
             ? 'translate-x-0'
             : '-translate-x-full xl:translate-x-0'
-        } ${isCollapsed ? 'xl:w-20' : 'xl:w-64'} w-[267px]`}
+        } ${isCollapsed ? 'xl:w-20' : 'xl:w-64'}`}
       >
+        {/* Header section - fixed height */}
         <div
-          className={`flex p-6 px-0 border-b relative border-brand-primary-light items-center ${isCollapsed ? 'justify-center' : 'justify-center'}`}
+          className={`flex-shrink-0 flex p-6 px-0 border-b relative border-brand-primary-light items-center ${isCollapsed ? 'justify-center' : 'justify-center'}`}
         >
           {isCollapsed ? (
             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
@@ -98,50 +99,57 @@ const SideNav: React.FC<SideNavProps> = ({
           </button>
         )}
 
-        {/* Main content area with proper overflow handling */}
-        <div className="flex flex-col h-full overflow-hidden">
-          {/* Navigation menu - with its own scrollable area */}
-          <nav className="flex-1 overflow-y-auto mini-scroll mt-6 px-2">
-            <ul className="space-y-1">
-              {menuItems.map((item) => (
-                <li key={item.id} className="group">
-                  <div className="relative">
-                    <Link
-                      href={item.path}
-                      className={`flex items-center px-3 py-3 rounded-lg text-base transition-all duration-200 ${
-                        pathname === item.path
-                          ? 'text-white font-semibold bg-brand-primary-light shadow-inner'
-                          : 'text-gray-300 hover:bg-brand-primary-light hover:text-white'
-                      } ${isCollapsed ? 'justify-center' : 'justify-start'}`}
-                      aria-current={pathname === item.path ? 'page' : undefined}
-                    >
-                      <span
-                        className={`${isCollapsed ? '' : 'mr-3'}`}
-                        aria-hidden="true"
+        {/* Content wrapper with proper overflow behavior */}
+        <div className="flex flex-col flex-grow h-0 overflow-hidden">
+          {/* Scrollable navigation area */}
+          <div className="flex-grow overflow-y-auto mini-scroll">
+            <nav className="mt-6 px-2">
+              <ul className="space-y-1">
+                {menuItems.map((item) => (
+                  <li key={item.id} className="group">
+                    <div className="relative">
+                      <Link
+                        href={item.path}
+                        className={`flex items-center px-3 py-3 rounded-lg text-base transition-all duration-200 ${
+                          pathname === item.path
+                            ? 'text-white font-semibold bg-brand-primary-light shadow-inner'
+                            : 'text-gray-300 hover:bg-brand-primary-light hover:text-white'
+                        } ${isCollapsed ? 'justify-center' : 'justify-start'}`}
+                        aria-current={
+                          pathname === item.path ? 'page' : undefined
+                        }
                       >
-                        <Icon icon={item.icon.props.icon} className="h-6 w-6" />
-                      </span>
-                      {!isCollapsed && <span>{item.name}</span>}
-
-                      {/* Active indicator */}
-                      {pathname === item.path && (
                         <span
-                          className="absolute inset-y-0 left-0 w-1 bg-blue-400 rounded-r-full"
+                          className={`${isCollapsed ? '' : 'mr-3'}`}
                           aria-hidden="true"
-                        ></span>
-                      )}
-                    </Link>
+                        >
+                          <Icon
+                            icon={item.icon.props.icon}
+                            className="h-6 w-6"
+                          />
+                        </span>
+                        {!isCollapsed && <span>{item.name}</span>}
 
-                    {/* Using reusable tooltip component */}
-                    {isCollapsed && <CollapsedTooltip text={item.name} />}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </nav>
+                        {/* Active indicator */}
+                        {pathname === item.path && (
+                          <span
+                            className="absolute inset-y-0 left-0 w-1 bg-blue-400 rounded-r-full"
+                            aria-hidden="true"
+                          ></span>
+                        )}
+                      </Link>
 
-          {/* Bottom section - fixed at bottom */}
-          <div className="mt-auto flex-shrink-0">
+                      {/* Using reusable tooltip component */}
+                      {isCollapsed && <CollapsedTooltip text={item.name} />}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          {/* Settings and user profile section - fixed at bottom with known height */}
+          <div className="flex-shrink-0">
             <div className="p-2 border-t border-brand-primary-light">
               <div className="group relative">
                 <Link
