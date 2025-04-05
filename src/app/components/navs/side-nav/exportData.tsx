@@ -12,19 +12,19 @@ export const menuItems = [
   {
     id: 2,
     name: 'Threat Logs',
-    path: '/threat-logs',
+    path: '/dashboard/threat-logs',
     icon: <Icon icon="fluent:mail-48-regular" className={iconClass} />,
   },
   {
     id: 3,
     name: 'Remediation Logs',
-    path: '/remediation-logs',
+    path: '/dashboard/remediation-logs',
     icon: <Icon icon="fluent:shield-20-regular" className={iconClass} />,
   },
   {
     id: 4,
     name: 'Connect Email',
-    path: '/connect-email',
+    path: '/dashboard/connect',
     icon: (
       <Icon icon="fluent:plug-disconnected-48-regular" className={iconClass} />
     ),
