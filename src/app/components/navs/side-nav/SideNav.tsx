@@ -11,19 +11,7 @@ import mainLogo from '../../../../../public/img/logo-inverted.svg';
 import { useUserProfile } from '@/app/lib/api-client-services/userProfile';
 import { LoadingSkeleton } from './Loadingskeleton';
 import useInitials from '@/app/hooks/useInitials';
-
-// Reusable tooltip component
-interface TooltipProps {
-  text: string;
-}
-
-const CollapsedTooltip: React.FC<TooltipProps> = ({ text }) => {
-  return (
-    <div className="fixed left-24 transform -translate-y-1/2 mt-0 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-40">
-      {text}
-    </div>
-  );
-};
+import CollapsedTooltip from './CollapsedTooltip';
 
 interface SideNavProps {
   isMobileMenuOpen: boolean;
