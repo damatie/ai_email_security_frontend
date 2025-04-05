@@ -8,7 +8,7 @@ import RecentActivityCard from './components/RecentActivity/RecentActivityCard';
 import { useTimeOfDay } from '@/app/hooks/useDateTime';
 import { useAppSelector } from '@/app/state/hook';
 
-export default function Overview() {
+export default function OverviewPage() {
   const timeOfDay = useTimeOfDay();
   const { userProfile } = useAppSelector((state) => state.userProfile);
 
@@ -48,7 +48,7 @@ export default function Overview() {
         title={`Good ${timeOfDay}, ${userProfile?.first_name}!`}
         subTitle="Here’s what happening in your email"
       />
-      <div className=" flex flex-col gap-y-[22px]">
+      <div className=" flex flex-col gap-y-8">
         <section className="flex flex-col md:flex-row w-full gap-y-[10px] md:gap-x-[22px] ">
           <MetricCard
             iconName={'fluent:mail-48-regular'}
@@ -63,7 +63,7 @@ export default function Overview() {
             dataClassName=""
           />
         </section>
-        <section className="flex flex-col xl:flex-row w-full gap-y-[22px] md:gap-x-[22px] ">
+        <section className="flex flex-col xl:flex-row w-full gap-y-8 md:gap-x-[22px] ">
           <ThreatSummary />
           <ThreatTrendBarChart
             dailyData={dailyActivityData}

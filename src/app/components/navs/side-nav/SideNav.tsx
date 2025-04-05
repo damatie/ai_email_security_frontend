@@ -64,7 +64,7 @@ const SideNav: React.FC<SideNavProps> = ({
               <Image src={mainLogo} alt="Logo" className="object-contain" />
               <button
                 onClick={onToggleCollapse}
-                className="hidden absolute -right-4 xl:flex h-8 w-8 rounded-full bg-brand-primary-light items-center justify-center hover:bg-brand-primary-dark transition-all duration-200"
+                className="hidden absolute cursor-pointer -right-4 xl:flex h-8 w-8 rounded-full bg-brand-primary items-center justify-center hover:bg-brand-primary transition-all duration-200"
                 aria-label="Collapse sidebar"
               >
                 <Icon
@@ -80,7 +80,7 @@ const SideNav: React.FC<SideNavProps> = ({
         {isMobileMenuOpen && (
           <button
             onClick={onToggleMobile}
-            className="absolute top-5 right-5 h-8 w-8 rounded-full bg-brand-primary-light flex items-center justify-center xl:hidden hover:bg-brand-primary-dark transition-all duration-200"
+            className="absolute top-5 cursor-pointer right-5 h-8 w-8 rounded-full bg-brand-primary-light flex items-center justify-center xl:hidden hover:bg-brand-primary-dark transition-all duration-200"
             aria-label="Close mobile menu"
           >
             <Icon icon="heroicons:x-mark" className="h-5 w-5 text-white" />
@@ -90,7 +90,7 @@ const SideNav: React.FC<SideNavProps> = ({
         {/* Content wrapper */}
         <div className="flex flex-col flex-grow h-0 overflow-hidden">
           {/* Scrollable navigation area */}
-          <div className="flex-grow overflow-y-auto mini-scroll">
+          <div className="flex-grow overflow-hidden overflow-y-auto  mini-scroll">
             <nav className="mt-6 px-2">
               <ul className="space-y-1">
                 {menuItems.map((item) => (
@@ -116,7 +116,9 @@ const SideNav: React.FC<SideNavProps> = ({
                             className="h-6 w-6"
                           />
                         </span>
-                        {!isCollapsed && <span>{item.name}</span>}
+                        {!isCollapsed && (
+                          <span className=" min-w-[190px]">{item.name}</span>
+                        )}
 
                         {/* Active indicator */}
                         {pathname === item.path && (
@@ -151,7 +153,9 @@ const SideNav: React.FC<SideNavProps> = ({
                     className="h-6 w-6"
                     aria-hidden="true"
                   />
-                  {!isCollapsed && <span className="ml-3">Settings</span>}
+                  {!isCollapsed && (
+                    <span className="ml-3 min-w-[170px]">Settings</span>
+                  )}
                 </Link>
 
                 {/* Using reusable tooltip component */}
@@ -161,7 +165,7 @@ const SideNav: React.FC<SideNavProps> = ({
 
             {/* User profile section */}
             {!isCollapsed ? (
-              <div className="p-4 border-t border-brand-primary-light">
+              <div className="p-4 border-t border-brand-primary-light ">
                 {isSuccess ? (
                   <div className="flex items-center justify-between w-full px-2 py-2 rounded-lg text-gray-300 transition-colors">
                     <div className="flex flex-row items-center">
@@ -171,7 +175,9 @@ const SideNav: React.FC<SideNavProps> = ({
                         </span>
                       </div>
                       <div className="flex flex-col items-start">
-                        <span className="text-sm font-medium">{fullName}</span>
+                        <span className="text-sm font-medium min-w-[140px]">
+                          {fullName}
+                        </span>
                         <span className="text-xs font-medium text-brand-green">
                           Active
                         </span>
@@ -225,7 +231,7 @@ const SideNav: React.FC<SideNavProps> = ({
       {isCollapsed && (
         <button
           onClick={onToggleCollapse}
-          className="hidden xl:flex fixed left-17 top-8 z-20 h-8 w-8 rounded-full bg-brand-primary shadow-lg items-center justify-center hover:bg-brand-primary-dark transition-all duration-200"
+          className="hidden xl:flex cursor-pointer fixed left-17 top-8 z-20 h-8 w-8 rounded-full bg-brand-primary shadow-lg items-center justify-center hover:bg-brand-primary-dark transition-all duration-200"
           aria-label="Expand sidebar"
         >
           <Icon icon="heroicons:chevron-right" className="h-5 w-5 text-white" />

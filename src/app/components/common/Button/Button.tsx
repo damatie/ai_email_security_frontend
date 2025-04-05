@@ -59,7 +59,7 @@ export function Button({
 }: ButtonProps) {
   // Base styling applied to every button
   const baseClasses =
-    'font-semibold h-[48px] text-base py-2 px-4 rounded-[6px] transition-colors duration-200';
+    'font-semibold h-[48px] text-base py-2 px-4 rounded-md transition-colors duration-200';
 
   // Default styling for each variant
   const variantClasses = {
