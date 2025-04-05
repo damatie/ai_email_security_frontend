@@ -55,7 +55,7 @@ export default function DashboardClientLayout({
   };
 
   return (
-    <div className="flex h-full max-h-screen bg-red-400 overflow-hidden">
+    <div className="flex bg-red-400 overflow-hidden">
       {/* SideNav component */}
       <SideNav
         isMobileMenuOpen={isMobileMenuOpen}
