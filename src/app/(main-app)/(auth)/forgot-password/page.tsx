@@ -7,7 +7,7 @@ import { InputField } from '@/app/components/common/InputField/InputField';
 import { Button } from '@/app/components/common/Button/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { forgotPassword } from '@/app/lib/api-client-services/auth';
+import { forgotPassword } from '@/app/lib/api-client-services/Auth/auth';
 import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
 import useCookie from '@/app/hooks/useCookie';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';

@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react';
 import axios from 'axios';
-import { useToast } from '../components/common/toast/ToastContext';
-
-// Define a type for toast options to improve type checking
-type ToastOptions = Parameters<ReturnType<typeof useToast>['showToast']>[2];
+import {
+  ToastOptions,
+  useToast,
+} from '../components/common/toast/ToastContext';
 
 // Centralize toast configuration
 const defaultErrorToastOptions: ToastOptions = {

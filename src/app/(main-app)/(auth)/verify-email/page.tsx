@@ -9,13 +9,12 @@ import useCookie from '@/app/hooks/useCookie';
 import {
   resendVerificationEmail,
   verifyEmail,
-} from '@/app/lib/api-client-services/auth';
+} from '@/app/lib/api-client-services/Auth/auth';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
 import { InputField } from '@/app/components/common/InputField/InputField';
 import { Button } from '@/app/components/common/Button/Button';
-import { FeedbackCard } from '@/app/components/common/FeedbackCard/FeedbackCard';
-import clockIcon from '../../../../../public/icons/clock.svg';
 import { ResendButton } from './logic/ResendButton';
+import { FeedbackCard } from '@/app/components/common/FeedbackCard/FeedbackCard';
 
 // Types
 export interface VerifyEmailValues {
@@ -39,7 +38,7 @@ export default function VerifyEmailPage() {
   if (!email && !verifyEmailSession) {
     return (
       <FeedbackCard
-        Icon={clockIcon}
+        IconName="iconoir:clock"
         title=" Session Not Found"
         subTitle="You dont have any active email verification session"
         label="Back to Login"
@@ -54,6 +53,7 @@ export default function VerifyEmailPage() {
   if (verifyEmailSession) {
     return (
       <FeedbackCard
+        IconName="octicon:check-circle-24"
         title="Email Verification Successful"
         subTitle="Your email has been verified successfully"
         label="Back to Login"

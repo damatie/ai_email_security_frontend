@@ -3,10 +3,19 @@
 import PageTop from '@/app/components/common/PageGreetings/pageTop';
 import ConnectCard from '../components/ConnectCard/ConnectCard';
 import InfoSection from '../components/InfoSection/InfoSection';
+import { useConnectWithGmail } from '@/app/lib/api-client-services/Connect/hooks/useGmailAuth ';
+import Overlay from '@/app/components/common/BgOverlay/Overlay';
+import { FeedbackCard } from '@/app/components/common/FeedbackCard/FeedbackCard';
+import { useUserProfile } from '@/app/lib/api-client-services/Profile/hooks/useUserProfile';
 
 export default function ConnectAccountPage() {
+  const { data: fetchedProfile } = useUserProfile();
+  const { connectGmailAccount, setMsg, isLoading, msg } = useConnectWithGmail();
+
+  const connectedAccount = fetchedProfile?.data?.connectedAccount || 0;
+
   return (
-    <main className=" flex flex-col w-full">
+    <main className=" animate-fade-up flex flex-col w-full">
       <PageTop
         title={`Connect Your Email`}
         subTitle="Connect your email account to start protecting your inbox"
@@ -15,16 +24,21 @@ export default function ConnectAccountPage() {
       <div className="flex flex-col items-start ">
         <section className="flex  max-w-5xl flex-col md:flex-row justify-start gap-8 gap-x-[22px] mb-8 w-full">
           <ConnectCard
+            onClick={() => {
+              connectGmailAccount();
+            }}
+            isDisabled={isLoading || connectedAccount > 0}
             logo="logos:google-gmail"
             title="Gmail"
             description="Connect your Google Mail account"
-            buttonText="Connect Gmail"
+            buttonText={isLoading ? 'Connecting...' : 'Connect Gmail'}
           />
           <ConnectCard
+            isDisabled={true}
             logo="vscode-icons:file-type-outlook"
             title="Outlook"
             description="Connect your Microsoft Outlook account"
-            buttonText="Connect Outlook"
+            buttonText="Coming soon!"
           />
         </section>
 
@@ -54,6 +68,18 @@ export default function ConnectAccountPage() {
           </div>
         </section>
       </div>
+
+      <Overlay isOpen={msg ? true : false}>
+        <FeedbackCard
+          IconName="mdi:email-check-outline"
+          containerStyle="text-brand-green"
+          title="Connection with Gmail"
+          textClass=" max-w-[290px] mx-auto"
+          subTitle={msg}
+          label="Continue"
+          nextAction={() => setMsg('')}
+        />
+      </Overlay>
     </main>
   );
 }

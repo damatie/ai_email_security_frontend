@@ -28,7 +28,7 @@ export function ClientLayoutProvider({
             <ToastProvider>
               {children}
               <ToastContainer
-                position="top-right"
+                position="bottom-right"
                 autoClose={5000}
                 hideProgressBar={true}
                 newestOnTop

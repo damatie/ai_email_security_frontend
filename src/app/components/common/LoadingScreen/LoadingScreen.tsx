@@ -15,15 +15,23 @@ import React from 'react';
  *   </div>
  * );
  */
-const LoadingScreen: React.FC = () => {
+
+interface LoadingScreenProps {
+  showLoadingText?: boolean;
+}
+const LoadingScreen: React.FC<LoadingScreenProps> = ({
+  showLoadingText = true,
+}) => {
   return (
-    <div className=" absolute w-full top-0 bottom-0 left-0 flex flex-col items-center justify-center ">
+    <div className=" absolute w-full -top-[100px] bottom-0 left-0 flex flex-col items-center justify-center z-50  h-screen  ">
       {/* Spinner */}
       <div className="w-16 h-16 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
       {/* Loading text */}
-      <h1 className="mt-4 text-brand-primary text-2xl font-bold animate-pulse">
-        Loading...
-      </h1>
+      {showLoadingText && (
+        <h1 className="mt-4 text-brand-primary text-2xl font-bold animate-pulse">
+          Loading...
+        </h1>
+      )}
     </div>
   );
 };

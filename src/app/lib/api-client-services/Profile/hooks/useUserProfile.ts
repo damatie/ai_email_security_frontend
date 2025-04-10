@@ -1,23 +1,11 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { api, apiVersion, setAuthToken } from './axios-client';
+import { useSession, signOut } from 'next-auth/react';
 import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
 import { useEffect } from 'react';
-
-/**
- * Fetches the user profile details from the API.
- * The provided token is used to set the Authorization header.
- *
- * @param token - The access token from the NextAuth session.
- * @returns The API response data.
- */
-export const getUserProfile = async (token: string) => {
-  // Ensure the Authorization header is set for this request
-  setAuthToken(token);
-  const url = `${apiVersion.v1}/individual/dashboard/profile`;
-  const response = await api.get(url);
-  return response.data;
-};
+import { isAxiosError } from 'axios';
+import { getUserProfile } from '../userProfile';
 
 /**
  * Custom hook that uses React Query to fetch and cache user profile details.
@@ -27,7 +15,7 @@ export const getUserProfile = async (token: string) => {
  */
 
 export function useUserProfile() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const token = session?.user?.accessToken;
   const { handleApiError } = useApiErrorHandler();
 
@@ -36,15 +24,25 @@ export function useUserProfile() {
     queryFn: () => getUserProfile(token as string),
     enabled: !!token, // Only run the query if the token exists.
     staleTime: 60000, // Data remains fresh for 1 minute.
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
-  // Handle error outside the useQuery options
+  // Handle API errors
   useEffect(() => {
     if (query.error) {
-      handleApiError(query.error);
+      const { error } = query;
+
+      if (
+        (isAxiosError(error) && error?.response?.status === 401) ||
+        status === 'unauthenticated'
+      ) {
+        signOut();
+      }
+
+      if (isAxiosError(error) && error?.response?.status !== 401)
+        handleApiError(error);
     }
-  }, [query.error, handleApiError]);
+  }, [query.error, handleApiError, query, status]);
 
   return query;
 }

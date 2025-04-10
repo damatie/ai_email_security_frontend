@@ -1,4 +1,4 @@
-import { api, apiVersion } from './axios-client';
+import { api, apiVersion } from '../axios-client';
 import { CreateAccountValues } from '@/app/(main-app)/(auth)/register/page';
 import { ForgotPasswordValues } from '@/app/(main-app)/(auth)/forgot-password/page';
 import { ResetPasswordValues } from '@/app/(main-app)/(auth)/reset-password/page';

@@ -7,11 +7,11 @@ import * as Yup from 'yup';
 import { InputField } from '@/app/components/common/InputField/InputField';
 import { Button } from '@/app/components/common/Button/Button';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
-import { resendVerificationEmail } from '@/app/lib/api-client-services/auth';
+import { resendVerificationEmail } from '@/app/lib/api-client-services/Auth/auth';
 import { useNextAuthErrorHandler } from '@/app/hooks/useNextAuthErrorHandler ';
 import useCookie from '@/app/hooks/useCookie';
 
@@ -32,6 +32,7 @@ const validationSchema = Yup.object().shape({
 
 export default function LoginPage() {
   const router = useRouter();
+  const { status } = useSession();
   const { handleApiError } = useApiErrorHandler();
   const { handleNextAuthError } = useNextAuthErrorHandler();
   const { set: setEmail } = useCookie('vr_e');
@@ -40,6 +41,8 @@ export default function LoginPage() {
     email: '',
     password: '',
   };
+  // Next auth loading status
+  const isLoading = status === 'loading';
 
   // Set cookie
   const handleCookie = (email: string) => {
@@ -108,6 +111,7 @@ export default function LoginPage() {
         }) => {
           const isButtonDisabled =
             isSubmitting ||
+            isLoading ||
             Object.keys(errors).length > 0 ||
             Object.values(values).some((value) => !value);
 
@@ -141,7 +145,7 @@ export default function LoginPage() {
                 <Link href="/forgot-password">Forgot password?</Link>
               </div>
               <Button
-                label={isSubmitting ? 'Processing...' : 'Login'}
+                label={isSubmitting || isLoading ? 'Processing...' : 'Login'}
                 type="submit"
                 className="mt-4"
                 disabled={isButtonDisabled}

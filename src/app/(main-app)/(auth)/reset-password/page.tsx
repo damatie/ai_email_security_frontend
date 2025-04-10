@@ -6,12 +6,11 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import { useApiErrorHandler } from '@/app/hooks/useApiErrorHandler';
 import useCookie from '@/app/hooks/useCookie';
-import { resetPassword } from '@/app/lib/api-client-services/auth';
+import { resetPassword } from '@/app/lib/api-client-services/Auth/auth';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
 import { InputField } from '@/app/components/common/InputField/InputField';
 import { Button } from '@/app/components/common/Button/Button';
 import { FeedbackCard } from '@/app/components/common/FeedbackCard/FeedbackCard';
-import clockIcon from '../../../../../public/icons/clock.svg';
 
 // Types
 export interface ResetPasswordValues {
@@ -50,7 +49,7 @@ export default function ResetPasswordPage() {
   if (!email && !resetPasswordSession) {
     return (
       <FeedbackCard
-        Icon={clockIcon}
+        IconName="iconoir:clock"
         title="Session Not Found"
         subTitle="You dont have any active reset password session"
         label="Back to Login"
@@ -65,6 +64,7 @@ export default function ResetPasswordPage() {
   if (resetPasswordSession) {
     return (
       <FeedbackCard
+        IconName="octicon:check-circle-24"
         title="Password Reset Successful"
         subTitle="Your password has been reset successfully"
         label="Back to Login"

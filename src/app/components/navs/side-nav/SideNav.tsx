@@ -8,10 +8,10 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { menuItems } from './exportData';
 import mainLogo from '../../../../../public/img/logo-inverted.svg';
-import { useUserProfile } from '@/app/lib/api-client-services/userProfile';
-import { LoadingSkeleton } from './Loadingskeleton';
+import { SideNavLoadingSkeleton } from './SideNavLoadingSkeleton';
 import useInitials from '@/app/hooks/useInitials';
 import CollapsedTooltip from './CollapsedTooltip';
+import { useUserProfile } from '@/app/lib/api-client-services/Profile/hooks/useUserProfile';
 
 interface SideNavProps {
   isMobileMenuOpen: boolean;
@@ -200,7 +200,7 @@ const SideNav: React.FC<SideNavProps> = ({
                     Failed to load profile
                   </div>
                 ) : (
-                  <LoadingSkeleton />
+                  <SideNavLoadingSkeleton />
                 )}
               </div>
             ) : (

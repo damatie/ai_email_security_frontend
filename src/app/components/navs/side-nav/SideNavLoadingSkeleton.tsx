@@ -1,4 +1,4 @@
-export function LoadingSkeleton() {
+export function SideNavLoadingSkeleton() {
   return (
     <div className="flex items-center justify-between w-full px-0 py-3 rounded-md  animate-pulse">
       <div className="flex flex-row items-center">

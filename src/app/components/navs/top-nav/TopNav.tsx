@@ -2,18 +2,21 @@
 
 import React from 'react';
 import { Icon } from '@iconify/react';
+import { useUserProfile } from '@/app/lib/api-client-services/Profile/hooks/useUserProfile';
+import { TopNavLoadingSkeleton } from './TopNavLoadingSkeleton';
 
 interface TopNavProps {
-  connectedAccountsCount: number;
   onToggleMobileMenu: () => void;
   isMobileMenuOpen: boolean;
 }
 
 const TopNav: React.FC<TopNavProps> = ({
-  connectedAccountsCount,
   onToggleMobileMenu,
   isMobileMenuOpen,
 }) => {
+  const { data: fetchedProfile, isSuccess } = useUserProfile();
+  const connectedAccount = fetchedProfile?.data?.connectedAccount || 0;
+
   return (
     <div className="flex items-center justify-between py-4 px-4 md:px-6 bg-gray-100 shadow-sm xl:shadow-none">
       <div className="flex items-center">
@@ -34,32 +37,39 @@ const TopNav: React.FC<TopNavProps> = ({
           Dashboard
         </h1> */}
       </div>
-
       <div className="flex items-center space-x-4">
-        {/* Connected accounts indicator */}
-        <div className="flex items-center px-4 py-2 bg-white rounded-lg shadow-sm">
-          <Icon icon="heroicons:link" className="h-5 w-5 text-gray-500 mr-2" />
-          <span className=" flex text-sm gap-1 font-medium text-gray-600">
-            {connectedAccountsCount}
-            <span className="hidden md:flex">
-              {connectedAccountsCount === 1 ? 'Account' : 'Accounts'} Connected
-            </span>
-          </span>
-        </div>
-
-        {/* Notification bell */}
-        <button className="relative p-2 rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors">
-          <Icon icon="heroicons:bell" className="h-5 w-5 text-gray-600" />
-          <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full border-2 border-white"></span>
-        </button>
-
-        {/* Help/support button */}
-        <button className="p-2 rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors">
-          <Icon
-            icon="heroicons:question-mark-circle"
-            className="h-5 w-5 text-gray-600"
-          />
-        </button>
+        {isSuccess ? (
+          <>
+            {' '}
+            {/* Connected accounts indicator */}
+            <div className="flex items-center px-4 py-2 bg-white rounded-lg shadow-sm">
+              <Icon
+                icon="heroicons:link"
+                className="h-5 w-5 text-gray-500 mr-2"
+              />
+              <span className=" flex text-sm gap-1 font-medium text-gray-600">
+                {connectedAccount}
+                <span className="hidden md:flex">
+                  {connectedAccount === 1 ? 'Account' : 'Accounts'} Connected
+                </span>
+              </span>
+            </div>
+            {/* Notification bell */}
+            <button className="relative p-2 rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors">
+              <Icon icon="heroicons:bell" className="h-5 w-5 text-gray-600" />
+              <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full border-2 border-white"></span>
+            </button>
+            {/* Help/support button */}
+            <button className="p-2 rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors">
+              <Icon
+                icon="heroicons:question-mark-circle"
+                className="h-5 w-5 text-gray-600"
+              />
+            </button>
+          </>
+        ) : (
+          <TopNavLoadingSkeleton />
+        )}
       </div>
     </div>
   );

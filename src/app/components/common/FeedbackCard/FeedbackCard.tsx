@@ -1,17 +1,17 @@
 import React from 'react';
-import Image from 'next/image';
-import CheckList from '../../../../../public/icons/check.svg';
 import { Button } from '@/app/components/common/Button/Button';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface FeedbackCardProps {
   title: string;
-  subTitle?: string;
+  subTitle?: React.ReactNode;
   nextAction: () => void;
   containerStyle?: string;
   label?: string;
-  Icon?: string;
+  IconName?: string;
   textClass?: string;
   titleClass?: string;
+  iconClassName?: string;
   hasAnimation?: boolean;
 }
 
@@ -21,9 +21,10 @@ export function FeedbackCard({
   nextAction,
   containerStyle,
   label = 'Continue',
-  Icon,
+  IconName = '',
   titleClass,
   textClass,
+  iconClassName,
   hasAnimation = true,
 }: FeedbackCardProps) {
   return (
@@ -33,7 +34,11 @@ export function FeedbackCard({
       }  mx-auto  w-full max-w-[420px] mt-[50px] lg:mt-[24px] ${containerStyle}`}
     >
       <span className=" flex flex-col  items-center w-full ">
-        <Image src={Icon ?? CheckList} alt="CheckList" className=" w-[80px]" />
+        <Icon
+          icon={IconName}
+          className={`h-20 w-20 ${iconClassName}`}
+          aria-hidden="true"
+        />
       </span>
       <h3
         className={`font-Rubik text-center font-medium mt-[19px] text-[24px] text-brand-primary dark:text-secondaryGray ${titleClass}`}

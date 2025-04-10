@@ -6,11 +6,14 @@ import ThreatSummary from './components/ThreatSummary/ThreatSummary';
 import ThreatTrendBarChart from './components/ThreatTrends/ThreatTrendBarChart';
 import RecentActivityCard from './components/RecentActivity/RecentActivityCard';
 import { useTimeOfDay } from '@/app/hooks/useDateTime';
-import { useAppSelector } from '@/app/state/hook';
+import { useUserProfile } from '@/app/lib/api-client-services/Profile/hooks/useUserProfile';
+import { ConnectPrompt } from '@/app/components/common/ConnectPrompt/ConnectPrompt';
 
 export default function OverviewPage() {
   const timeOfDay = useTimeOfDay();
-  const { userProfile } = useAppSelector((state) => state.userProfile);
+  const { data: fetchedProfile } = useUserProfile();
+  const name = fetchedProfile?.data?.first_name || '';
+  const connectedAccount = fetchedProfile?.data?.connectedAccount || 0;
 
   const dailyActivityData = [
     { name: 'Mon', suspicious: 32, malicious: 27 },
@@ -37,15 +40,14 @@ export default function OverviewPage() {
     { name: 'May', suspicious: 450, malicious: 320 },
     { name: 'Jun', suspicious: 520, malicious: 370 },
   ];
-
-  // if (status === 'loading') {
-  //   return <LoadingScreen />;
-  // }
+  if (connectedAccount === 0) {
+    return <ConnectPrompt />;
+  }
 
   return (
-    <main className=" flex flex-col w-full">
+    <main className=" animate-fade-up flex flex-col w-full">
       <PageTop
-        title={`Good ${timeOfDay}, ${userProfile?.first_name}!`}
+        title={`Good ${timeOfDay}, ${name}!`}
         subTitle="Here’s what happening in your email"
       />
       <div className=" flex flex-col gap-y-8">
@@ -54,7 +56,7 @@ export default function OverviewPage() {
             iconName={'fluent:mail-48-regular'}
             title={'Total Emails Scanned'}
             data={'350'}
-            dataClassName="text-2xl "
+            dataClassName="text-2xl"
           />
           <MetricCard
             iconName={'fluent:clock-20-regular'}

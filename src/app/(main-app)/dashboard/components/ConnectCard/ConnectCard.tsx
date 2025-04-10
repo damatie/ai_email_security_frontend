@@ -7,6 +7,8 @@ interface ConnectCardProps {
   title: string;
   description: string;
   buttonText: string;
+  isDisabled?: boolean;
+  onClick?: () => void;
 }
 
 const ConnectCard: React.FC<ConnectCardProps> = ({
@@ -14,6 +16,8 @@ const ConnectCard: React.FC<ConnectCardProps> = ({
   title,
   description,
   buttonText,
+  onClick,
+  isDisabled,
 }) => {
   return (
     <div className="flex flex-col items-center p-6 bg-white rounded-lg border border-gray-200 hover:border-brand-primary-light transition-all duration-300 ease-in-out transform w-full lg:w-64">
@@ -23,6 +27,8 @@ const ConnectCard: React.FC<ConnectCardProps> = ({
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
       <p className="text-center text-gray-600 mb-6 text-sm">{description}</p>
       <Button
+        disabled={isDisabled}
+        onClick={onClick}
         variant="primary"
         label={buttonText}
         fullWidth={false}

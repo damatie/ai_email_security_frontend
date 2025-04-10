@@ -9,7 +9,7 @@ import useCookie from '@/app/hooks/useCookie';
 import AuthFormWrapper from '../components/AuthFormWrapper/AuthFormWrapper';
 import { InputField } from '@/app/components/common/InputField/InputField';
 import { Button } from '@/app/components/common/Button/Button';
-import { creatAccount } from '@/app/lib/api-client-services/auth';
+import { creatAccount } from '@/app/lib/api-client-services/Auth/auth';
 import Link from 'next/link';
 
 // Types
